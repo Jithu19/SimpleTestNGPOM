@@ -42,4 +42,12 @@ public class LoginPage {
 
     }
 
+    public HomePage login(String usrName, String usrPwd) {
+
+        enterUserCredentials(usrName, usrPwd);
+        clickLoginButton();
+        return new HomePage(driver);
+
+    }
+
 }

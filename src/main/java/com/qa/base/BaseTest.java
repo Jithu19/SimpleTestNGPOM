@@ -3,7 +3,7 @@ package com.qa.base;
 import com.qa.pages.HomePage;
 import com.qa.pages.LoginPage;
 import com.qa.utils.GeneralUtils;
-import com.qa.utils.WebDriverManager;
+import com.qa.driver.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
