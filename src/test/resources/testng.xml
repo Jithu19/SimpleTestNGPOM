@@ -4,12 +4,15 @@
 
     <listeners>
         <listener class-name="com.qa.listeners.AllureTestListener"/>
+        <listener class-name="com.qa.listeners.AnnotationTransformer" />
     </listeners>
 
     <test name="Regression Tests" parallel="methods" thread-count="3" verbose="3">
         <classes>
             <class name="com.qa.tests.LoginTest"/>
             <class name="com.qa.tests.HomeTest"/>
+            <class name="com.qa.tests.SortProductItemTest"/>
+            <class name="com.qa.tests.AddCartItemTest"/>
         </classes>
     </test>
 
