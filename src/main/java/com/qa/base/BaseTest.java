@@ -1,9 +1,7 @@
 package com.qa.base;
 
-import com.qa.pages.CartPage;
-import com.qa.pages.HomePage;
-import com.qa.pages.LoginPage;
-import com.qa.utils.GeneralUtils;
+import com.qa.manager.PageObjectManager;
+import com.qa.utils.ConfigReader;
 import com.qa.driver.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
@@ -14,33 +12,31 @@ import java.time.Duration;
 public class BaseTest {
 
     protected WebDriver driver;
-    protected LoginPage loginPage;
-    protected HomePage homePage;
-    protected CartPage cartPage;
+    protected PageObjectManager pageObjectManager;
 
-    public static final String CONFIG_PATH =
-            System.getProperty("user.dir")
-                    + "/src/test/resources/config/config.properties";
-
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setUp() {
 
-        String browser = System.getProperty("browsername", GeneralUtils.getProperty(CONFIG_PATH, "browser"));
+        String browser = System.getProperty(
+                "browsername",
+                ConfigReader.get("browser")
+        );
 
-        driver = WebDriverManager.getInstance(browser).getDriver();
+        WebDriverManager.initDriver(browser);
+        driver = WebDriverManager.getDriver();
+
+        if (driver == null) {
+            throw new IllegalStateException("WebDriver initialization failed");
+        }
 
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.get(ConfigReader.get("site_url"));
 
-        driver.get(GeneralUtils.getProperty(CONFIG_PATH, "site_url"));
-
-        loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
-        cartPage = new CartPage(driver);
-
+        pageObjectManager = new PageObjectManager(driver);
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
         WebDriverManager.quitDriver();
 
