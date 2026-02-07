@@ -1,9 +1,6 @@
 package com.qa.utils;
 
 import org.openqa.selenium.*;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.*;
 import java.time.Duration;
@@ -111,28 +108,6 @@ public class GeneralUtils {
         } catch (UnexpectedTagNameException e) {
             throw new AssertionError(
                     "Element is not a dropdown: " + locator, e);
-        }
-    }
-
-    /* =========================
-       PROPERTY FILE
-       ========================= */
-
-    public static String getProperty(String filePath, String propertyName) {
-        Properties properties = new Properties();
-        try (FileInputStream fis = new FileInputStream(filePath)) {
-            properties.load(fis);
-            String value = properties.getProperty(propertyName);
-
-            if (value == null) {
-                throw new AssertionError(
-                        "Property '" + propertyName + "' not found in file: " + filePath);
-            }
-            return value;
-
-        } catch (IOException e) {
-            throw new AssertionError(
-                    "Unable to read config file: " + filePath, e);
         }
     }
 }

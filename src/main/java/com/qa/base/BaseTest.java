@@ -3,10 +3,15 @@ package com.qa.base;
 import com.qa.manager.PageObjectManager;
 import com.qa.utils.ConfigReader;
 import com.qa.driver.WebDriverManager;
+import io.qameta.allure.Allure;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
+import java.io.ByteArrayInputStream;
 import java.time.Duration;
 
 public class BaseTest {
@@ -37,7 +42,22 @@ public class BaseTest {
     }
 
     @AfterMethod(alwaysRun = true)
-    public void tearDown() {
+    public void tearDown(ITestResult result) {
+        if (result.getStatus() == ITestResult.FAILURE) {
+
+            WebDriver driver = WebDriverManager.getDriver();
+
+            if (driver != null) {
+                byte[] screenshot = ((TakesScreenshot) driver)
+                        .getScreenshotAs(OutputType.BYTES);
+
+                Allure.addAttachment(
+                        "Failure Screenshot - " + result.getName(),
+                        new ByteArrayInputStream(screenshot)
+                );
+            }
+        }
+
         WebDriverManager.quitDriver();
 
     }

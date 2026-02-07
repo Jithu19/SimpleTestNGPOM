@@ -3,7 +3,6 @@
 <suite name="SeleniumSimplePOM Suite">
 
     <listeners>
-        <listener class-name="com.qa.listeners.AllureTestListener"/>
         <listener class-name="com.qa.listeners.AnnotationTransformer" />
     </listeners>
 
